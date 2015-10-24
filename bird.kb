@@ -1,0 +1,174 @@
+rule:
+if   its nostrils are external and tubular and 
+     it lives "n:at sea" and 
+     its bill is hooked 
+then its order is "n:tubenose".
+
+rule:
+if   its feet are webbed and 
+     its bill is flat 
+then its order is waterfowl.
+
+rule:
+if   it eats meat and 
+     its feet are curved talons and 
+     its bill is sharp and hooked 
+then its order is falconiforms.
+
+rule:
+if   it has one long backward toe 
+then its order is passerformes.
+
+rule:
+if   its order is "n:tubenose" and 
+     it is large and 
+     its wings are long and narrow 
+then its family is albatross.
+
+rule:
+if   its order is waterfowl and 
+     its neck is long and 
+     it is white and 
+     it flies ponderously 
+then its family is swan.
+
+rule:
+if   its order is waterfowl and 
+     it is plump and 
+     it flies powerfully 
+then its family is goose.
+
+rule:
+if   its order is waterfowl and 
+     it feeds "n:on the water's surface" and 
+     it flies agilely 
+then its family is duck.
+
+rule:
+if   its order is falconiforms and 
+     it scavenges and 
+     its wings are broad 
+then its family is vulture.
+
+rule:
+if   its order is falconiforms and 
+     its wings are long and pointed and 
+     its head is large and 
+     its tail is "n:narrow at the tip" 
+then its family is falcon.
+
+rule:
+if   its order is passerformes and 
+     its bill is flat and 
+     it eats flying insects 
+then its family is flycatcher.
+
+rule:
+if   its order is passerformes and 
+     its wings are long and pointed and 
+     its tail is forked and 
+     its bill is short 
+then its family is swallow.
+
+rule:
+if   its family is albatross and 
+     it is white 
+then it is a "n:laysan albatross".
+
+rule:
+if   its family is albatross and 
+     it is dark 
+then it is a "n:black footed albatross".
+
+rule:
+if   its order is "n:tubenose" and 
+     its size is medium and 
+     its flight is a "n:flap/glide" 
+then it is a fulmar.
+
+rule:
+if   its family is swan and 
+     its voice is a muffled musical whistle 
+then it is a "n:whistling swan".
+
+rule:
+if   its family is swan and 
+     its voice is a loud trumpeting 
+then it is a "n:trumpeter swan".
+
+rule:
+if   its family is goose and 
+     it winters "n:in the united states" and 
+     its head is black and 
+     its cheeks are white 
+then it is a "n:canada goose".
+
+rule:
+if   its family is goose and 
+     it summers "n:in canada" and 
+     its head is black and 
+     its cheeks are white 
+then it is a "n:canada goose".
+
+rule:
+if   its family is goose and 
+     it is white 
+then it is a "n:snow goose".
+
+rule:
+if   its family is duck and 
+     it quacks and 
+     its head is green 
+then it is a mallard.
+
+rule:
+if   its family is duck and 
+     it quacks and 
+     it is mottled brown 
+then it is a mallard.
+
+rule:
+if   its family is duck and 
+     its voice is a short whistle 
+then it is a pintail.
+
+rule:
+if   its family is vulture and 
+     its flight has a v-shaped profile 
+then it is a "n:turkey vulture".
+
+rule:
+if   its family is vulture and 
+     its flight has a flat profile 
+then it is a "n:california condor".
+
+rule:
+if   its family is falcon and 
+     it eats insects 
+then it is a "n:sparrow hawk".
+
+rule:
+if   its family is falcon and 
+     it eats birds 
+then it is a "n:peregrine falcon".
+
+rule:
+if   its family is flycatcher and 
+     its tail is long and rusty 
+then it is a "n:great crested flycatcher".
+
+rule:
+if   its family is flycatcher and 
+     its throat is white 
+then it is an "n:ash throated flycatcher".
+
+rule:
+if   its family is swallow and 
+     its tail is forked 
+then it is a "n:barn swallow".
+
+rule:
+if   its family is swallow and 
+     it is dark 
+then it is a "n:purple martin".
+
