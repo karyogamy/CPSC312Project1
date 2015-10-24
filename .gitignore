@@ -1,0 +1,7 @@
+# libraries
+
+schlachter/
+wordnet/
+
+# test
+*.test
