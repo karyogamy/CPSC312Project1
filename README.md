@@ -6,6 +6,19 @@ Libraries are included in the repo.
 However, they will be git ignored for commit/push.
 Please don't make any changes to the libraries.
 
+For the first week, the work are done in fwt.pl.
+Don't panic if you see warning messages.
+
+# Note
+
+To switch Prolog's current working directory, use:
+
+	working_directory(_, CWD).
+
+Example:
+	
+ working_directory(_, "D:/Git/312/CPSC312Project1").
+
 # Acknowledgement:
 
 - ProNTo_Morph: Morphological Analysis Tool:
