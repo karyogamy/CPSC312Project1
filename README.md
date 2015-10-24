@@ -10,6 +10,9 @@ For the first week, the work are done in fwt.pl.
 Don't panic if you see warning messages.
 
 # Note
+To import .pl files of name that begins with numerals, do:
+
+	['312-pess'].
 
 To switch Prolog's current working directory, use:
 
