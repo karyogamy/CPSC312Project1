@@ -17,7 +17,7 @@ To switch Prolog's current working directory, use:
 
 Example:
 	
- working_directory(_, "D:/Git/312/CPSC312Project1").
+	working_directory(_, "D:/Git/312/CPSC312Project1").
 
 # Acknowledgement:
 
