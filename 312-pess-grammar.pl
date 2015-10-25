@@ -569,7 +569,43 @@ split_attrs([attr(NonTarget, Val, Subs)|Rest],
 write_sentence([]).
 write_sentence([Word|Words]) :- write(Word), tab(1), write_sentence(Words).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Vocabulary Sentence parser                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Entry point
+vocab(Words) -->
+    vocab_phrase_conj(Words).
+
+conjunction --> [and].
+conjunction --> []. % Part of the document, must be supported
+
+% Turns a single sentence composed of multiple phrases into a list of
+% vocabulary atoms.
+vocab_phrase_conj(Types) -->
+    vocab_phrase(First), conjunction,
+    vocab_phrase_conj(Rest),
+    { Types = [First|Rest] }. % Accumulative/recursive case.
+vocab_phrase_conj(Types) -->
+    vocab_phrase(Type),
+    { Types = [Type|[]] }. % Base case.
+
+% Turn a single sentence/phrase into a vocabulary atom.
+vocab_phrase(Word) -->
+    [Head, Type], % Not a sentence, but still supported
+    { type(Type, Head, Word) }.
+vocab_phrase(Word) -->
+    [Head], vis, det_opt, [Type], % SOV sentence, e.g. fallout is a noun
+    { type(Type, Head, Word) }.
+
+% Currently, only four vocabulary types are supported.
+% These predicates turn a word to a vocabulary atom with a
+% curresponding type.
+
+type(noun, X, n(X)).
+type(verb, X, v(X)).
+type(adjective, X, adj(X)).
+type(adverb, X, adv(X)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Vocabulary for the PESS parser                               %%
