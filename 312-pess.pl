@@ -345,14 +345,16 @@ load_rules :- !.            % Cut avoids backtracking (and re-processing!)
 % If I were going to add new types of statements in knowledge base
 % files, I might do it by writing extra process clauses below.
 process([]) :- !.           % Ignore empty rules.
+process(['#'|_]) :- !.      % Ignore comments on new line, must end 
+                            % with period.
 process(['rule:'|L]) :-     % Found a rule.
         rule(R,L,[]),       % Parse the rule.
         bug(R),             % Print it for debugging.
         assert_rules(R), !. % Assert it (them, potentially) in the DB.
-process(['words:'|L]) :-    % process words
+process(['words:'|L]) :-    % Process Vocabularies
   vocab(R,L,[]),
   bug(R),
-  assert_rules(R), !.
+  assert_rules(R), !.  
 process(L) :-
         write('trans error on:'),nl,
         write(L),nl.

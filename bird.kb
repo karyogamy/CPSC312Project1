@@ -176,6 +176,9 @@ words: thing is a noun.
 
 words: lift is verb.
 
+# test test bakatest.
+
+# This case contains multiple phrases that are not proper sentence.
 words: 
 	late adjective and
 	project noun and
@@ -183,6 +186,7 @@ words:
 	tired adjective and
 	instructor is a noun.
 
+# This conj case has no conjunction word.
 words:
 	last is an adjective
 	word is a noun.
