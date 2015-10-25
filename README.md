@@ -1,6 +1,6 @@
 # CPSC 312 Project 1
 
-If you are here, you know who this is for.
+If you are here, you know what this is for.
 
 Libraries are included in the repo.
 However, they will be git ignored for commit/push.
@@ -10,6 +10,9 @@ For the first week, the work are done in fwt.pl.
 Don't panic if you see warning messages.
 
 # Note
+To import .pl files of name that begins with numerals, do:
+
+	['312-pess'].
 
 To switch Prolog's current working directory, use:
 
