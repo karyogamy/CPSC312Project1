@@ -24,6 +24,6 @@ Example:
 
 # Acknowledgement
 
-- [ProNTo_Morph: Morphological Analysis Tool](ai1.ai.uga.edu/mc/pronto/)
+- [ProNTo_Morph: Morphological Analysis Tool](http://ai1.ai.uga.edu/mc/pronto/)
 
-- [Wordnet Database Packages](wordnet.princeton.edu/)
+- [Wordnet Database Packages](https://wordnet.princeton.edu/)
