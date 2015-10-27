@@ -50,7 +50,7 @@
 % String 'contants'
 introtext('CPSC312 PESS Shell.\nType help for commands to quit to exit.\n').
 helptext('help\tDisplay this text\nload\tLoad rules from a knowledge base\nsolve\tSolve the specified goal\nquit\tExit the expert system\n').
-loadtext('Enter file name in single quotes.\n(e.g \'bird.kb\'): ').
+loadtext('Enter file name without quotes.\n(e.g bird.kb): ').
 
 clear(C) :- retract(C), !.
 clear(_).
