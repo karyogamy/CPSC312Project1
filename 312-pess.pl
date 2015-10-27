@@ -46,7 +46,62 @@
 %% Interpreter loop                                             %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%% TODO!! %%%%%%%%%%%%%%%%%%%%
+:- dynamic(end/0).
+% String 'contants'
+introtext('CPSC312 PESS Shell.\nType help for commands to quit to exit.\n').
+helptext('help\tDisplay this text\nload\tLoad rules from a knowledge base\nsolve\tSolve the specified goal\nquit\tExit the expert system\n').
+loadtext('Enter file name in single quotes.\n(e.g \'bird.kb\'): ').
+
+clear(C) :- retract(C), !.
+clear(_).
+
+% this starts the interpretter and ensures end/0 is false
+main :- clear(end), introtext(X), write(X), loop.
+loop :- repeat, write('> '), read_line([C | _]), command(C), (end), !.
+
+% chooses the command to run
+% trailing cuts are necessary for the "unrecognized command" case
+command(solve) :- solve, !.
+command(load) :- loadtext(X), write(X), read_full_line(FCh), atom_chars(F,FCh), load_rules(F), !.
+command(help) :- helptext(X), write(X), !.
+command(quit) :- assertz(end), !.
+command(X) :- write('Unrecognized command: '), write(X), write('\n'), !.
+
+% read_line/1 mimics the readln/1 built-in command except for the '|: ' printed
+% Loosely based on read_sentence/1 in 312-press-grammar
+read_line(_) :- peek_char(Ch), char_type(Ch, end_of_file), !, fail.
+read_line(L) :- read_line_helper(L).
+
+% decide what to do next
+% fail at EOF
+read_line_helper(_L) :- peek_char(Ch), char_type(Ch, end_of_file), !, fail.
+
+% No items are present at the end of line but should still consume it
+read_line_helper([]) :- peek_char(Ch), char_type(Ch, end_of_line), !, get_char(_).
+
+% Consume whitespace
+read_line_helper(L)  :- peek_char(Ch), char_type(Ch, space), !, get_char(Ch), read_line_helper(L).
+
+% read an item
+read_line_helper([W|L]) :- read_next(C), atom_chars(W, C), read_line_helper(L).
+
+
+% choose what is the next item to be read
+read_next(X) :- peek_char(Ch), char_type(Ch, punct), !, read_punct(X).
+read_next(X) :- read_word1(X).
+
+% read a single punctuation mark
+read_punct([P]) :- peek_char(P), char_type(P, punct), !, get_char(P).
+
+% read non-space, non-EOL, non-punct, and non-EOF characters into a list.
+read_word1([]) :- peek_char(Ch), char_type(Ch, space), !.
+read_word1([]) :- peek_char(Ch), char_type(Ch, end_of_line), !.
+read_word1([]) :- peek_char(Ch), char_type(Ch, punct), !.
+read_word1([]) :- peek_char(Ch), char_type(Ch, end_of_file), !.
+read_word1([H|T]) :- get_char(H), read_word1(T).
+
+read_full_line([]) :- peek_char(Ch), char_type(Ch, end_of_line),  !, get_char(_).
+read_full_line([H|T]) :- get_char(H), read_full_line(T).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Solving, asking, and proving                                 %%
