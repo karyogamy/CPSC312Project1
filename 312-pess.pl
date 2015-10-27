@@ -60,12 +60,14 @@ main :- clear(end), introtext(X), write(X), loop.
 loop :- repeat, write('> '), read_line([C | _]), command(C), (end), !.
 
 % chooses the command to run
-% trailing cuts are necessary for the "unrecognized command" case
-command(solve) :- solve, !.
-command(load) :- loadtext(X), write(X), read_full_line(FCh), atom_chars(F,FCh), load_rules(F), !.
-command(help) :- helptext(X), write(X), !.
-command(quit) :- assertz(end), !.
-command(X) :- write('Unrecognized command: '), write(X), write('\n'), !.
+% leading cuts are necessary for the "unrecognized command" case
+% X shouldn't be top_goal because it can be anything, i.e. anonymous
+command(list) :-  !, rule(X, Y), not(X = top_goal(_)), plain_gloss([rule(X,Y)], Text), write_sentence(Text), nl.
+command(solve) :- !, solve.
+command(load) :- !, loadtext(X), write(X), read_full_line(FCh), atom_chars(F,FCh), load_rules(F).
+command(help) :- !, helptext(X), write(X).
+command(quit) :- !, assertz(end).
+command(X) :- write('Unrecognized command: '), write(X), write('\n').
 
 % read_line/1 mimics the readln/1 built-in command except for the '|: ' printed
 % Loosely based on read_sentence/1 in 312-press-grammar
@@ -430,7 +432,7 @@ clear_db :-
 bug(X) :- write('Understood: '), 
         plain_gloss(X, Text), 
         write_sentence(Text), nl.
-bug(X) :- write(X).
+bug(X) :- write(X), nl.
 
 %% NOTE: to improve modularity, read_sentence/1 is defined in
 %% 312pess-grammar.pl (which allows that file to run independently of
