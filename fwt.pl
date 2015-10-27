@@ -24,8 +24,8 @@ read_line(L) :- read_line_helper(L).
 % fail at EOF
 read_line_helper(_L) :- peek_char(Ch), char_type(Ch, end_of_file), !, fail.
 
-% No items are present at the end of line
-read_line_helper([]) :- peek_char(Ch), char_type(Ch, end_of_line), !.
+% No items are present at the end of line but it should still consume the character
+read_line_helper([]) :- peek_char(Ch), char_type(Ch, end_of_line), !, get_char(_).
 
 % Consume whitespace
 read_line_helper(L)  :- peek_char(Ch), char_type(Ch, space), !, get_char(Ch), read_line_helper(L).
