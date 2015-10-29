@@ -66,7 +66,7 @@ read_sentence(S) :- read_sent_helper(S).
 read_sent_helper([]) :- peek_char(Ch),       % Stop at end of file.
         Ch = 'end_of_file', !.
 read_sent_helper([]) :- peek_char(Ch),       % Stop at a period.
-        Ch = '.', !, get_char(Ch).
+        char_type(Ch, period), !, get_char(Ch).
 read_sent_helper(Words) :- peek_char(Ch),    % Eat whitespace
         char_type(Ch, space), !, get_char(Ch), 
         read_sent_helper(Words).
@@ -92,7 +92,7 @@ read_word_to(Stop, [C|Cs]) :- get_char(C), read_word_to(Stop, Cs).
 % Read a word delimited by whitespace or a period (which ends the 
 % sentence).
 read_word([]) :- peek_char(Ch), char_type(Ch, space), !.
-read_word([]) :- peek_char(Ch), Ch = '.', !.
+read_word([]) :- peek_char(Ch), char_type(Ch, period), !.
 read_word([]) :- peek_char(Ch), char_type(Ch, end_of_file), !.
 read_word([Ch|Chs]) :- get_char(Ch), read_word(Chs).
 
@@ -186,6 +186,9 @@ rule(Rules) -->                              % S if S+
         sentence(Head), [if],                
         sentence_conj_plus(Body),
         { build_rules(Body, Head, Rules) }.
+%rule(Rules) -->
+%		[what], sentence(Head),
+%		{ build_rules([], Head, Rules) }.
 rule(Rules) -->
         sentence(Head),                      % S (only)
         { build_rules([], Head, Rules) }.    % That's a fact! No body.
@@ -203,6 +206,13 @@ sentence_conj_plus(Attrs) -->
 % Sentences that start with 'it' or other vacuous subjects.
 sentence(Attrs) -->
         np([]), vp(Attrs).
+		
+sentence(Attrs) -->
+		np([NPT | NPTs]), vp(VPTerms),
+		{	NPT = attr(_, what, _), 
+			build_prepend_attrs([NPT | NPTs],
+								VPTerms,
+								Attrs) }.
 
 % Sentences that start with meaningful subjects are
 % noun phrase then verb phrase.
@@ -211,7 +221,9 @@ sentence(Attrs) -->
 % "it has talons that are sharp". 
 sentence(Attrs) -->
         np([NPT|NPTs]), vp(VPTerms),
-        { convert_to_has_a([NPT|NPTs], 
+        { 	NPT = attr(_, Sub, _),
+			not(u(Sub)),
+			convert_to_has_a([NPT|NPTs], 
                            NPTermsHas),   % Convert to canonical form.
           build_prepend_attrs(NPTermsHas, 
                               VPTerms, 
@@ -671,6 +683,11 @@ n(pintail).
 n(bird).
 n(throat).
 n(insects).
+
+n(what).
+
+% unknown sections
+u(what).
 
 % Adverbs.
 :- dynamic(adv/1).  % Ensure that the predicate can be modified dynamically

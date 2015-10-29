@@ -384,7 +384,8 @@ prepend_attr(attr(Type, Val, _),
 
 % Load rules from the given file (clearing the rule DB first).
 load_rules(F) :-
-        clear_db,
+        % note this is the default goal
+		set_goal([it, is, a, what]),
         see(F),
         load_rules,
         write('rules loaded'),nl,
@@ -420,13 +421,37 @@ process(L) :-
 assert_rules([]).
 assert_rules([R|Rs]) :- assertz(R), assert_rules(Rs).
 
+% handle setting dynamic goals
+do_assert(T, what, Re) :- assertz(rule(top_goal(X), [attr(T, X, Re)])).
+do_assert(T, Q, Re) :- assertz(rule(top_goal(Q), [attr(T, Q, Re)])).
+
+set_goal(L) :-
+	clear_db,
+	rule([R | _], L, []),
+	extract(R, T, Q, Re),
+	do_assert(T, Q, Re).	
+
+% testing
+replace(_OI, _NI, [], []).
+replace(OI, NI, [OI | T], [NI | T2]) :- replace(OI, NI, T, T2).
+replace(OI, NI, [H | T], [H | T2]) :- OI \= H, replace(OI, NI, T, T2).
+
+extract(R, T, Q, Re) :-
+	R = rule(attr(T, Q, Re), _L).
+
+convert(I, O) :-
+	term_to_atom(I, A1),
+	tokenize_atom(A1, T1),
+	replace(what, 'X', T1, T2),
+	atomic_list_concat(T2, O).
+	
+build_top_goal(A, G) :-
+	atomic_list_concat(['rule(top_goal(X), [', A, '])'], G).
+	
 % Delete the contents of the database (the rules, not the knowledge).
-% Also establishes the default top goal (to find out what "it" is).
 clear_db :-
-        abolish(rule,2),
-        dynamic(rule/2),
-        %% For now, top_goal is set manually.
-        assertz(rule(top_goal(X), [attr(is_a, X, [])])).
+        abolish(rule,2), 
+        dynamic(rule/2).
 
 % Gloss a rule for debugging output.
 bug(X) :- write('Understood: '), 
@@ -437,8 +462,6 @@ bug(X) :- write(X), nl.
 %% NOTE: to improve modularity, read_sentence/1 is defined in
 %% 312pess-grammar.pl (which allows that file to run independently of
 %% 312pess.pl).
-
-
 
 
 
