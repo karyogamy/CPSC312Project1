@@ -634,6 +634,16 @@ type(adverb, X, adv(X)).
 % included. Ideally, again, stemming would be automatic, even for
 % user-supplied words.
 
+:- [wordnet/wn_s].
+:- [schlachter/pronto_morph_engine].
+
+% simple wrapper to break a word into stems and check those stems against a type
+type_wrap(Q, T) :- morph_atoms_bag(Q, X), check_type(X, T).
+
+% checks that the root stems match the specified type
+check_type([[[Hs | _Sf]] | _Ts], T) :- s(_, _, Hs, T, _, _).
+check_type([_ | Ts], T) :- check_type(Ts, T).
+
 % Nouns.
 :- dynamic(n/1).    % Ensure that the predicate can be modified dynamically
 
@@ -685,6 +695,7 @@ n(throat).
 n(insects).
 
 n(what).
+n(Q) :- type_wrap(Q, n), !.
 
 % unknown sections
 u(what).
@@ -700,6 +711,7 @@ adv(ponderously).
 adv(powerfully).
 adv(agilely).
 adv(mottled).
+adv(Q) :- type_wrap(Q, r), !.
 
 % Adjectives.
 :- dynamic(adj/1).  % Ensure that the predicate can be modified dynamically
@@ -737,6 +749,8 @@ adj(brown).
 adj('v-shaped').
 adj(rusty).
 adj(square).
+adj(Q) :- type_wrap(Q, a), !.
+adj(Q) :- type_wrap(Q, s), !.
 
 % Doing verbs (i.e., not is/are or has/have/contains/contain).
 :- dynamic(v/1).  % Ensure that the predicate can be modified dynamically
@@ -749,3 +763,4 @@ v(scavenges).
 v(quacks).
 v(summers).
 v(winters).
+v(Q) :- type_wrap(Q, v), !.
