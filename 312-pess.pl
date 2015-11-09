@@ -52,6 +52,8 @@ introtext('CPSC312 PESS Shell.\nType help for commands to quit to exit.\n').
 helptext('help\tDisplay this text\nload\tLoad rules from a knowledge base\nsolve\tSolve the specified goal\nquit\tExit the expert system\n').
 loadtext('Enter file name without quotes.\n(e.g bird.kb): ').
 goaltext('Enter the new goal: ').
+facttext('Enter new fact: ').
+ruletext('Enter new rule: ').
 
 clear(C) :- retract(C), !.
 clear(_).
@@ -64,6 +66,8 @@ loop :- repeat, write('> '), read_line([C | _]), command(C), (end), !.
 % leading cuts are necessary for the "unrecognized command" case
 % X shouldn't be top_goal because it can be anything, i.e. anonymous
 command(goal) :- !, goaltext(X), write(X), read_sentence(S), set_goal(S).
+command(fact) :- !, facttext(X), write(X), read_sentence(S), set_fact(S).
+command(rule) :- !, ruletext(X), write(X), read_sentence(S), set_rule(S).
 command(list) :-  !, rule(X, Y), not(X = top_goal(_)), plain_gloss([rule(X,Y)], Text), write_sentence(Text), nl.
 command(solve) :- !, solve.
 command(load) :- !, loadtext(X), write(X), read_full_line(FCh), atom_chars(F,FCh), load_rules(F).
@@ -408,18 +412,24 @@ process([]) :- !.           % Ignore empty rules.
 process(['#'|_]) :- !.      % Ignore comments on new line, must end 
                             % with period.
 process(['rule:'|L]) :-     % Found a rule.
-        rule(R,L,[]),       % Parse the rule.
-        bug(R),             % Print it for debugging.
-        assert_rules(R), !. % Assert it (them, potentially) in the DB.
+	set_rule(L).
 process(['words:'|L]) :-    % Process Vocabularies
-  vocab(R,L,[]),
-  bug(R),
-  assert_rules(R), !.  
-process(['goal:' | L]) :- 
+	set_fact(L).
+process(['goal:' | L]) :-
 	set_goal(L), !.
 process(L) :-
         write('trans error on:'),nl,
         write(L),nl.
+
+set_rule(L) :-
+        rule(R,L,[]),       % Parse the rule.
+        bug(R),             % Print it for debugging.
+        assert_rules(R), !. % Assert it (them, potentially) in the DB.
+
+set_fact(L) :-
+	vocab(R,L,[]),
+	bug(R),
+	assert_rules(R), !.
 
 % Assert a list of rules.
 assert_rules([]).
