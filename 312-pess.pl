@@ -431,7 +431,7 @@ do_assert(T, Q, Re) :- assertz(rule(top_goal(Q), [attr(T, Q, Re)])).
 
 set_goal(L) :-
 	clear_db,
-	rule([R | _], L, []),
+	goal([R | _], L, []),
 	extract(R, T, Q, Re),
 	% english mode
 	write('Understood goal: '), plain_gloss([attr(T, Q, Re)], Text), write_sentence(Text), nl,

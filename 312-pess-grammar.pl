@@ -186,13 +186,51 @@ rule(Rules) -->                              % S if S+
         sentence(Head), [if],                
         sentence_conj_plus(Body),
         { build_rules(Body, Head, Rules) }.
-%rule(Rules) -->
-%		[what], sentence(Head),
-%		{ build_rules([], Head, Rules) }.
 rule(Rules) -->
         sentence(Head),                      % S (only)
         { build_rules([], Head, Rules) }.    % That's a fact! No body.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Goal Sentence parser                                         %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% goal parsing
+goal(Goal) -->
+        question(Head),
+        { build_rules([], Head, Goal) }.
+
+% Pronouns
+pn --> [it]; [that]; ['IT']; ['THAT'].
+% There is no good way to capture and reuse the tail of a sentence in
+% a DCG.
+question(Attrs, Input, []) :-
+	Input = [VIS, PN|Rest],
+	vis([VIS], []),
+	pn([PN], []),
+	sentence(Attrs, [it, is|Rest], []).
+
+% case 'does', since question form head 'does' must be followed by 'it'.
+question_verb --> [does]; [will]; [can].
+question(Attrs) --> question_verb, sentence(Attrs).
+
+% you know what to add here.
+exclamation --> []; [the],[heck].
+
+% what the heck does it have
+question(Attrs) -->
+	[what], exclamation, question_verb, pn, [Verb],
+	{ sentence(Attrs, [it, Verb, what], []) }.
+% what the heck is THAT
+question(Attrs) -->
+	[what], exclamation, vis, pn,
+	{ sentence(Attrs, [it, is, what], []) }.
+
+% Desperate attempt on deciphering the question
+% case: it is a small what
+question(Attrs) --> sentence(Attrs).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Goal Sentence parser	END                                     %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % 1 or more sentences joined by ands.
 sentence_conj_plus(Attrs) -->
@@ -206,13 +244,15 @@ sentence_conj_plus(Attrs) -->
 % Sentences that start with 'it' or other vacuous subjects.
 sentence(Attrs) -->
         np([]), vp(Attrs).
-		
+
 sentence(Attrs) -->
 		np([NPT | NPTs]), vp(VPTerms),
-		{	NPT = attr(_, what, _), 
+		{
+		        NPT = attr(_, what, _),
 			build_prepend_attrs([NPT | NPTs],
-								VPTerms,
-								Attrs) }.
+		        VPTerms,
+			Attrs)
+		}.
 
 % Sentences that start with meaningful subjects are
 % noun phrase then verb phrase.
