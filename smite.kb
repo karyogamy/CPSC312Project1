@@ -1,0 +1,203 @@
+# Goal must be on the top to avoid clear_db which deletes all rules and vocabs.
+goal: what the heck is THAT?
+
+rule:
+if   it is magical and 
+     it features "n:high crowd damage" and
+     it specializes "n:in ability power"
+then its role is mage.
+
+rule:
+if   it is magical and 
+     it features "n:crowd control" and
+     it specializes "n:in defence"
+then its role is guardian.
+
+rule:
+if   it is physical and
+     it specializes "n:in attack damage" and
+     it is vulnerable
+then its role is hunter.
+
+rule:
+if   it is physical and 
+     it is sneaky and 
+     it specializes "n:in assassination"
+then its role is assassin.
+
+rule:
+if   it is physical and 
+     it features "n:high sustainability" and 
+     it features "n:average damage"
+then its role is warrior.
+
+rule:
+if   its role is mage and 
+     its origin is chinese and
+     its title is "n:dragon king of the eastern seas"
+then it is "n:Ao Kuang".
+
+rule:
+if   its role is mage and 
+     its origin is egyptian and
+     it symbolizes death
+then it is "n:Anubis".
+
+rule:
+if   its role is mage and 
+     its origin is egyptian and
+     it symbolizes sun
+then it is "n:Ra".
+
+rule:
+if   its role is mage and 
+     its origin is greek and
+     it symbolizes time
+then it is "n:Chronos".
+
+rule:
+if   its role is hunter and 
+     its origin is greek and
+     it is male and
+     it symbolizes sun
+then it is "n:Apollo".
+
+rule:
+if   its role is hunter and 
+     its origin is greek and
+     it is female and
+     it symbolizes hunting
+then it is "n:Artemis".
+
+rule:
+if   its role is hunter and 
+     its origin is greek and
+     its title is "n:the gorgon"
+then it is "n:Medusa".
+
+rule:
+if   its role is hunter and 
+     its origin is norse
+then it is "n:Ullr".
+
+rule:
+if   its role is assassin and 
+     its origin is greek and
+     it symbolizes death
+then it is "n:Thanatos".
+
+rule:
+if   its role is assassin and 
+     it symbolizes messenger and
+     its origin is norse
+then it is "n:Ratatoskr".
+
+rule:
+if   its role is assassin and 
+     it symbolizes messenger and
+     its origin is roman
+then it is "n:Mercury".
+
+rule:
+if   its role is assassin and 
+     its origin is norse and
+     its title is "n:the unbound"
+then it is "n:Fenrir".
+
+rule:
+if   its role is guardian and 
+     it is female
+then it is "n:Athena".
+
+rule:
+if   its role is guardian and 
+     its origin is greek and
+     it symbolizes war
+then it is "n:Ares".
+
+rule:
+if   its role is guardian and 
+     its origin is norse and
+     its title is "n:father of the frost giants"
+then it is "n:Ymir".
+
+rule:
+if   its role is guardian and 
+     its origin is chinese
+then it is "n:Xing Tian".
+
+rule:
+if   its role is warrior and 
+     its origin is roman and
+     it symbolizes war and
+     it is female
+then it is "n:Bellona".
+
+rule:
+if   its role is warrior and 
+     its origin is egyptian
+then it is "n:Osiris".
+
+rule:
+if   its role is warrior and 
+     its origin is mayan
+then it is "n:Chaac".
+
+rule:
+if   its role is warrior and 
+     its origin is roman and
+     it is male
+then it is "n:Hercules".
+
+words: thing is a noun.
+
+words: lift is verb.
+
+# test test bakatest.
+
+# This case contains multiple phrases that are not proper sentence.
+words: 
+	late adjective and
+	project noun and
+	silly adverb and
+	tired adjective and
+	instructor is a noun.
+
+# This conj case has no conjunction word.
+words:
+	last is an adjective
+	word is a noun.
+
+words:
+     specilizes is verb and
+     features is verb and
+     symbolizes is verb.
+
+words:
+     magical is adjective and
+     physical is adjective and
+     sneaky is adjective and
+     male is adjective and
+     female is adjective.
+
+words:
+     role is a noun and
+     title is a noun and
+     origin is a noun and
+     mage is a noun and 
+     assassian is a noun and
+     warrior is a noun and
+     hunter is a noun and
+     guardian is a noun and
+     chinese is a noun and
+     egyptian is a noun and
+     norse is a noun and
+     greek is a noun and
+     roman is a noun and
+     mayan is a noun and
+     war is a noun and
+     messenger is a noun and
+     time is a noun and
+     sun is a noun and
+     death is a noun and
+     hunting is a noun.
