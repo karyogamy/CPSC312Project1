@@ -203,31 +203,36 @@ goal(Goal) -->
 pn --> [it]; [that]; ['IT']; ['THAT'].
 % There is no good way to capture and reuse the tail of a sentence in
 % a DCG.
+% CASE 1: is it a brown swan (IMPORTANT: MUST HAVE NOUN AT THE END!!!!
+% OTHERWISE USE CASE 5 GRAMMAR!!!).
+%
+% [is it a brown swan -> it is a brown swan] for parsing purposes.
 question(Attrs, Input, []) :-
 	Input = [VIS, PN|Rest],
 	vis([VIS], []),
 	pn([PN], []),
 	sentence(Attrs, [it, is|Rest], []).
 
-% case 'does', since question form head 'does' must be followed by 'it'.
+% CASE 2: 'does', since question form head 'does' must be followed by 'it'.
+% After removing 'does' from the head, the tail is always a proper sentence. 
 question_verb --> [does]; [will]; [can].
 question(Attrs) --> question_verb, sentence(Attrs).
 
 % you know what to add here.
 exclamation --> []; [the],[heck].
 
-% what the heck does it have
+% CASE 3: what the heck does it have
 question(Attrs) -->
 	[what], exclamation, question_verb, pn, [Verb],
 	{ sentence(Attrs, [it, Verb, what], []) }.
-% what the heck is THAT
+% CASE 4: what the heck is THAT
 question(Attrs) -->
 	[what], exclamation, vis, pn,
 	{ sentence(Attrs, [it, is, what], []) }.
 
-% Desperate attempt on deciphering the question
-% case: it is a small what
+% CASE 5: it is a small what (original form: is it small)
 question(Attrs) --> sentence(Attrs).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Goal Sentence parser	END                                     %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -245,6 +250,8 @@ sentence_conj_plus(Attrs) -->
 sentence(Attrs) -->
         np([]), vp(Attrs).
 
+% Sentence that has its noun as WHAT are always regarded as a question.
+% These sentences are treated differently once parsed.
 sentence(Attrs) -->
 		np([NPT | NPTs]), vp(VPTerms),
 		{
