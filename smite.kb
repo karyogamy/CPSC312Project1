@@ -1,6 +1,53 @@
 # Goal must be on the top to avoid clear_db which deletes all rules and vocabs.
 goal: what the heck is THAT?
 
+# New vocabs must be on top in order for rules to parse correctly.
+words: 
+     late adjective and
+     project noun and
+     silly adverb and
+     tired adjective and
+     instructor is a noun.
+
+# This conj case has no conjunction word.
+words:
+     last is an adjective
+     word is a noun.
+
+words:
+     specilizes is verb and
+     features is verb and
+     symbolizes is verb.
+
+words:
+     magical is adjective and
+     physical is adjective and
+     sneaky is adjective and
+     male is adjective and
+     female is adjective.
+
+words:
+     role is a noun and
+     title is a noun and
+     origin is a noun and
+     mage is a noun and 
+     assassian is a noun and
+     warrior is a noun and
+     hunter is a noun and
+     guardian is a noun and
+     chinese is a noun and
+     egyptian is a noun and
+     norse is a noun and
+     greek is a noun and
+     roman is a noun and
+     mayan is a noun and
+     war is a noun and
+     messenger is a noun and
+     time is a noun and
+     sun is a noun and
+     death is a noun and
+     hunting is a noun.
+
 rule:
 if   it is magical and 
      it features "n:high crowd damage" and
@@ -148,56 +195,3 @@ if   its role is warrior and
      its origin is roman and
      it is male
 then it is "n:Hercules".
-
-words: thing is a noun.
-
-words: lift is verb.
-
-# test test bakatest.
-
-# This case contains multiple phrases that are not proper sentence.
-words: 
-	late adjective and
-	project noun and
-	silly adverb and
-	tired adjective and
-	instructor is a noun.
-
-# This conj case has no conjunction word.
-words:
-	last is an adjective
-	word is a noun.
-
-words:
-     specilizes is verb and
-     features is verb and
-     symbolizes is verb.
-
-words:
-     magical is adjective and
-     physical is adjective and
-     sneaky is adjective and
-     male is adjective and
-     female is adjective.
-
-words:
-     role is a noun and
-     title is a noun and
-     origin is a noun and
-     mage is a noun and 
-     assassian is a noun and
-     warrior is a noun and
-     hunter is a noun and
-     guardian is a noun and
-     chinese is a noun and
-     egyptian is a noun and
-     norse is a noun and
-     greek is a noun and
-     roman is a noun and
-     mayan is a noun and
-     war is a noun and
-     messenger is a noun and
-     time is a noun and
-     sun is a noun and
-     death is a noun and
-     hunting is a noun.
