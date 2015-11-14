@@ -1,0 +1,33 @@
+2
+====================
+This section was a bit strange to implement. It involved trying to make
+something that follows an imperative flow fit into a declarative language,
+which as it turns out involves a lot of cuts to make it follow only one path in
+the code. The actually implementation of the loop wasn’t too bad once repeat/0
+was understood as well as how to assert an end/0 so that the loop exits. Unifying
+each of the commands was something that was made to be easy since the remaining
+tasks required adding commands by others that may not understand the loop
+completely, so a simple list of commands each taking a single value to select
+was chosen. Implementing the commands themselves was relatively easy and just
+involved grabbing statements from knowledge base processing and reading lines
+or sentences into them. Extending from that, listing predicates was just a
+matter of allowing rules to be unified then printing them out until it ended.
+
+4
+====================
+This section was implemented in parallel with 3 in order to provide a faster
+way to test how goals were parsed. A common procedure was defined, set_goal/1,
+which would take the sentence and process it as a goal. There’s not too much to
+this implementation other than that the work done in 2 to make adding additional
+commands easier paid off.
+
+6
+====================
+This section was easy to implement since wordnet provides an argument of the
+word type to unify with. Using that it becomes a task of having generic word
+queries that check the type of that query. A wrapper was created to do this, as
+well as break the word into its components using pronto-morph. Each of the
+results from pronto-morph is then checked against wordnet to see if it matches
+the specified type, if not it just continues. Finding which type to compare the
+query to was in the documentation for wordnet so for each of the word types adding
+the appropriate wrapper case added the necessary functionality.
