@@ -368,6 +368,18 @@ int_adv_plus(AVPTerms) -->
 % Noun phrase is determiner (or "its") + adjectives + noun.
 % Produces an is_a with attached attributes.
 np(NPTerms) --> 
+        [a], 
+        adjp_star(APTerms), 
+        n(NTerms),
+        { check_consonant(APTerms, NTerms),
+          build_prepend_attrs(NTerms, APTerms, NPTerms) }.
+np(NPTerms) --> 
+        [an], 
+        adjp_star(APTerms), 
+        n(NTerms),
+        { check_vowel(APTerms, NTerms),
+          build_prepend_attrs(NTerms, APTerms, NPTerms) }.
+np(NPTerms) --> 
         det_opt, 
         adjp_star(APTerms), 
         n(NTerms),
@@ -392,14 +404,14 @@ adjp(APTerms) -->
 det_opt --> [].
 det_opt --> [its].
 det_opt --> [the].
-det_opt --> [a].
-det_opt --> [an].
+% Exclude a and an as they are special case, and will be treated separately
+% det_opt --> [a].
+% det_opt --> [an].
 
 % Nouns become is_a attributes.
 n([]) --> [it].                           % "it" is ignored
 n([attr(is_a,X,[])]) --> [X], { n(X) }.   % Anything listed below.
 n([attr(is_a,Name,[])]) --> lit(n, Name). % Any literal tagged as 'n'
-
 
 % Adverbs are either those provided below or literals.
 adv([attr(is_how,X,[])]) --> [X], { adv(X) }.
@@ -654,7 +666,17 @@ vocab_phrase(Word) -->
     [Head, Type], % Not a sentence, but still supported
     { type(Type, Head, Word) }.
 vocab_phrase(Word) -->
-    [Head], vis, det_opt, [Type], % SOV sentence, e.g. fallout is a noun
+    [Head], vis, [a], [Type], % SOV sentence, e.g. fallout is a noun
+    { atom_chars(Type, Ch),
+      check_consonant([],Ch),
+      type(Type, Head, Word) }.
+vocab_phrase(Word) -->
+    [Head], vis, [an], [Type], % SOV sentence, e.g. stupid is an adjective
+    { atom_chars(Type, Ch),
+      check_vowel([],Ch),
+      type(Type, Head, Word) }.
+vocab_phrase(Word) -->
+    [Head], vis, det_opt, [Type], % SOV sentence
     { type(Type, Head, Word) }.
 
 % Currently, only four vocabulary types are supported.
@@ -665,6 +687,28 @@ type(noun, X, n(X)).
 type(verb, X, v(X)).
 type(adjective, X, adj(X)).
 type(adverb, X, adv(X)).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Vowel checking                                               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Check if the word after determiner "an" start with a vowel
+check_vowel([], [attr(is_a, W, _)]) :- string_chars(W,[H|_]), vowel_allow(H).
+check_vowel([], [H|_]) :- not(H=attr(is_a, _, _)), vowel_allow(H).
+check_vowel([H|_], _) :- vowel_allow(H).
+
+% Check if the word after determiner "a" start with a consonant
+check_consonant([], [attr(is_a, W, _)]) :- string_chars(W,[H|_]), consonant_allow(H).
+check_consonant([], [H|_]) :- not(H=attr(is_a, _, _)), consonant_allow(H).
+check_consonant([H|_], _) :- consonant_allow(H).
+
+vowel_allow(X) :- vowel(X).
+vowel_allow(X) :- allow(X).
+consonant_allow(X) :- not(vowel(X)).
+consonant_allow(X) :- allow(X).
+% Allow either before "h" and "y"
+allow(h).
+allow(y).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Vocabulary for the PESS parser                               %%
@@ -796,6 +840,11 @@ adj(brown).
 adj('v-shaped').
 adj(rusty).
 adj(square).
+
+% adj(a) will return true and will cause issues in checking vowels,
+% excluded in adj check to avoid this issue.
+%% adj(Q) :- not(Q=a), type_wrap(Q, a), !.
+%% adj(Q) :- not(Q=a), type_wrap(Q, s), !.
 adj(Q) :- type_wrap(Q, a), !.
 adj(Q) :- type_wrap(Q, s), !.
 

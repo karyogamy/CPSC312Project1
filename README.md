@@ -22,6 +22,10 @@ Example:
 	
 	working_directory(_, "D:/Git/312/CPSC312Project1").
 
+# Final Report
+	
+	https://docs.google.com/document/d/1KVQL14gl86xiAjTTR3Ptxe0jIf2cIjDEs7ijfh-3-Jk/edit?usp=sharing
+	
 # Acknowledgement
 
 - [ProNTo_Morph: Morphological Analysis Tool](http://ai1.ai.uga.edu/mc/pronto/)
