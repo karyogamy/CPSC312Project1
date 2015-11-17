@@ -49,7 +49,7 @@
 :- dynamic(end/0).
 % String 'contants'
 introtext('CPSC312 PESS Shell.\nType help for commands to quit to exit.\n').
-helptext('help\tDisplay this text\nload\tLoad rules from a knowledge base\nsolve\tSolve the specified goal\nquit\tExit the expert system\n').
+helptext('help\tDisplay this text\nload\tLoad rules from a knowledge base\ngoal\tEnter a new goal to solve for\nfact\tEnter a new fact in the knowledge base\nrule\tAdd a new rule to the knowledge base\nlist\tList rules currently in knowledge base\nsolve\tSolve the specified goal\nquit\tExit the expert system\n').
 loadtext('Enter file name without quotes.\n(e.g bird.kb): ').
 goaltext('Enter the new goal: ').
 facttext('Enter new fact: ').
