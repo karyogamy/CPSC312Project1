@@ -49,7 +49,7 @@
 :- dynamic(end/0).
 % String 'contants'
 introtext('CPSC312 PESS Shell.\nType help for commands to quit to exit.\n').
-helptext('help\tDisplay this text\nload\tLoad rules from a knowledge base\ngoal\tEnter a new goal to solve for\nfact\tEnter a new fact in the knowledge base\nrule\tAdd a new rule to the knowledge base\nlist\tList rules currently in knowledge base\nsolve\tSolve the specified goal\nquit\tExit the expert system\n').
+helptext('help\tDisplay this text\nload\tLoad rules from a knowledge base\ngoal\tEnter a new goal to solve for\nfact\tEnter a new fact in the knowledge base\nrule\tAdd a new rule to the knowledge base\nlist\tList rules currently in knowledge base\nsolve\tSolve the specified goal\nclear\tClear the database\nquit\tExit the expert system\n').
 loadtext('Enter file name without quotes.\n(e.g bird.kb): ').
 goaltext('Enter the new goal: ').
 facttext('Enter new fact: ').
@@ -72,6 +72,7 @@ command(list) :-  !, rule(X, Y), not(X = top_goal(_)), plain_gloss([rule(X,Y)], 
 command(solve) :- !, solve, !.
 command(load) :- !, loadtext(X), write(X), read_full_line(FCh), atom_chars(F,FCh), load_rules(F).
 command(help) :- !, helptext(X), write(X).
+command(clear) :- !, clear_db.
 command(quit) :- !, assertz(end).
 command(X) :- write('Unrecognized command: '), write(X), write('\n').
 
@@ -390,8 +391,9 @@ prepend_attr(attr(Type, Val, _),
 
 % Load rules from the given file (clearing the rule DB first).
 load_rules(F) :-
+        clear_db,
         % note this is the default goal
-		set_goal([it, is, a, what]),
+		    set_goal([it, is, a, what]),
         see(F),
         load_rules,
         write('rules loaded'),nl,
@@ -440,7 +442,6 @@ do_assert(T, what, Re) :- assertz(rule(top_goal(X), [attr(T, X, Re)])).
 do_assert(T, Q, Re) :- assertz(rule(top_goal(Q), [attr(T, Q, Re)])).
 
 set_goal(L) :-
-	clear_db,
 	goal([R | _], L, []),
 	extract(R, T, Q, Re),
 	% english mode
