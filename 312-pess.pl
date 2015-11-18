@@ -410,7 +410,7 @@ load_rules :- !.            % Cut avoids backtracking (and re-processing!)
 % files, I might do it by writing extra process clauses below.
 process([]) :- !.           % Ignore empty rules.
 process(['#'|_]) :- !.      % Ignore comments on new line, must end 
-                            % with period.
+process(['%'|_]) :- !.      % with period.
 process(['rule:'|L]) :-     % Found a rule.
 	set_rule(L).
 process(['words:'|L]) :-    % Process Vocabularies
