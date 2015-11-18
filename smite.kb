@@ -56,7 +56,7 @@ then its role is mage.
 
 rule:
 if   it is magical and 
-     it features crowd control and
+     it features "n:crowd control" and
      it specializes "n:in defence"
 then its role is guardian.
 

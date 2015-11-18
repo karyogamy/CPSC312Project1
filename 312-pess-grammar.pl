@@ -408,48 +408,22 @@ det_opt --> [the].
 % det_opt --> [a].
 % det_opt --> [an].
 
-% An user-defined phrase which contains multiple words
-ph(NPhrase) --> 
-        [X], ph(Rest),
-        { append([X], Rest, NPhrase) }.
-ph([]) --> [].
-
 % Nouns become is_a attributes.
 n([]) --> [it].                           % "it" is ignored
-n([attr(is_a,Xa,[])]) -->                 % Multiple words listed below
-        ph(X),
-        { length(X, N), N>1, 
-          atomic_list_concat(X, " ", Xa), 
-          n(Xa) }.
-n([attr(is_a,X,[])]) --> [X], { n(X) }.   % Single word listed below.
+n([attr(is_a,X,[])]) --> [X], { n(X) }.   % Anything listed below.
 n([attr(is_a,Name,[])]) --> lit(n, Name). % Any literal tagged as 'n'
 
 % Adverbs are either those provided below or literals.
-adv([attr(is_how,Xa,[])]) -->
-        ph(X),
-        { length(X, N), N>1, 
-          atomic_list_concat(X, " ", Xa), 
-          adv(Xa) }.
 adv([attr(is_how,X,[])]) --> [X], { adv(X) }.
 adv([attr(is_how,Name,[])]) --> lit(adv, Name).
 
 % Adjectives are either those provided below or literals.
-adj([attr(is_like,Xa,[])]) -->
-        ph(X),
-        { length(X, N), N>1, 
-          atomic_list_concat(X, " ", Xa), 
-          adj(Xa) }.
 adj([attr(is_like,X,[])]) --> [X], { adj(X) }.
 adj([attr(is_like,Name,[])]) --> lit(adj, Name).
 
 
 % "Doing" verbs (as opposed to "has" and "is".
 % Either provided below or literals.
-vdoes([attr(does,Xa,[])]) -->
-        ph(X),
-        { length(X, N), N>1, 
-          atomic_list_concat(X, " ", Xa), 
-          v(Xa) }.
 vdoes([attr(does,X,[])]) --> [X], { v(X) }.
 vdoes([attr(does,Name,[])]) --> lit(v, Name).
 
@@ -528,6 +502,8 @@ convert_to_has_a([], []).
 convert_to_has_a([attr(is_a, Val, Subs)|Attrs],
                  [attr(has_a, Val, Subs)|ConvAttrs]) :-
         convert_to_has_a(Attrs, ConvAttrs).
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -687,35 +663,21 @@ vocab_phrase_conj(Types) -->
 
 % Turn a single sentence/phrase into a vocabulary atom.
 vocab_phrase(Word) -->
-    head(Head), [Type], % Not a sentence, but still supported
+    [Head, Type], % Not a sentence, but still supported
     { type(Type, Head, Word) }.
 vocab_phrase(Word) -->
-    head(Head), vis, [a], [Type], % SOV sentence, e.g. fallout is a noun
+    [Head], vis, [a], [Type], % SOV sentence, e.g. fallout is a noun
     { atom_chars(Type, Ch),
       check_consonant([],Ch),
       type(Type, Head, Word) }.
 vocab_phrase(Word) -->
-    head(Head), vis, [an], [Type], % SOV sentence, e.g. stupid is an adjective
+    [Head], vis, [an], [Type], % SOV sentence, e.g. stupid is an adjective
     { atom_chars(Type, Ch),
       check_vowel([],Ch),
       type(Type, Head, Word) }.
 vocab_phrase(Word) -->
-    head(Head), vis, det_opt, [Type], % SOV sentence
+    [Head], vis, det_opt, [Type], % SOV sentence
     { type(Type, Head, Word) }.
-
-% Head can be either multiple words in double quotes
-% or a single word.
-head(Head) --> dquote(Head).
-head(Head) --> [Head].
-
-% Turn multiples words in double quotes to atom.
-% Code modified from lit/2 above.
-dquote(Name) --> [dquote(Name)].
-dquote(Name) --> [X], 
-      { atom_chars(X, ['"'|Cs]),      % starts with "
-        append(NameCs, ['"'], Cs),      % ends with "
-        length(NameCs, N2), N2 > 0,
-        atom_chars(Name, NameCs) }.   % then collect the name.
 
 % Currently, only four vocabulary types are supported.
 % These predicates turn a word to a vocabulary atom with a
