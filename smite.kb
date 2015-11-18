@@ -1,6 +1,11 @@
 # Goal must be on the top to avoid clear_db which deletes all rules and vocabs.
 goal: what the heck is THAT?
 
+# Vocabs that should fail because of vowels and a
+words:
+     wrong is a adjective and
+     smite is an noun.
+
 # New vocabs must be on top in order for rules to parse correctly.
 words: 
      late adjective and
@@ -27,6 +32,8 @@ words:
      female is adjective.
 
 words:
+     "dragon king of the eastern seas" is a noun and
+     "crowd control" is a noun and
      role is a noun and
      title is a noun and
      origin is a noun and
@@ -81,7 +88,7 @@ then its role is warrior.
 rule:
 if   its role is mage and 
      its origin is chinese and
-     its title is "n:dragon king of the eastern seas"
+     its title is dragon king of the eastern seas
 then it is "n:Ao Kuang".
 
 rule:
