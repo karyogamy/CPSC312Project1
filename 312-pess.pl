@@ -69,7 +69,7 @@ command(goal) :- !, goaltext(X), write(X), read_sentence(S), set_goal(S).
 command(fact) :- !, facttext(X), write(X), read_sentence(S), set_fact(S).
 command(rule) :- !, ruletext(X), write(X), read_sentence(S), set_rule(S).
 command(list) :-  !, rule(X, Y), not(X = top_goal(_)), plain_gloss([rule(X,Y)], Text), write_sentence(Text), nl.
-command(solve) :- !, solve.
+command(solve) :- !, solve, !.
 command(load) :- !, loadtext(X), write(X), read_full_line(FCh), atom_chars(F,FCh), load_rules(F).
 command(help) :- !, helptext(X), write(X).
 command(quit) :- !, assertz(end).
